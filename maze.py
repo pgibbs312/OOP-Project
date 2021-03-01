@@ -44,7 +44,7 @@ class Maze:
             for y,space in enumerate(line):
                 if (self.is_item((x,y), items)):
                     print("O",end="") 
-                if (self.is_exit((x,y),exit_)):
+                if (self.is_exit(x,y)):
                     print("E",end="")
                 else:
                     print(self._lines[x][y],end="")
@@ -84,7 +84,7 @@ class Maze:
             
         return False
 
-    def is_exit(self, line_num, col_num)::
+    def is_exit(self, line_num, col_num):
         """
         Checks a spot on the grid while it's generating to see 
         if its coordinates match those of the exit point
