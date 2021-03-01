@@ -78,13 +78,13 @@ class Maze:
 
         :returns: Bool
         """ 
-        for i in items:
-            if spot == i:
-                return True
-            
-        return False
+        charac = self._lines[line_num][col_num]
+        if charac == "E":
+            return True
+        else:
+            return False
 
-    def is_exit(self,spot,exit_):
+    def is_exit(self, line_num, col_num):
         """
         Checks a spot on the grid while it's generating to see 
         if its coordinates match those of the exit point
