@@ -25,18 +25,18 @@ class Maze:
             return True
 
     def display(self):
-        item_count=0
-        rands = [self.find_random_spot() for i in range(4)]
-        print(rands)
+        items = [self.find_random_spot() for i in range(4)]
+        exit_ = self.find_random_spot()
+
+        while(exit_ in items):
+            exit_ = self.find_random_spot()
 
         for x,line in enumerate(self._lines):
             for y,space in enumerate(line):
-                if item_count<4:
-                    if (self.is_item((x,y), rands)):
-                        print("O",end="")
-                        item_count+=1 
-                    else:
-                        print(self._lines[x][y],end="")
+                if (self.is_item((x,y), items)):
+                    print("O",end="") 
+                if (self.is_exit((x,y),exit_)):
+                    print("E",end="")
                 else:
                     print(self._lines[x][y],end="")
             print("")
@@ -54,9 +54,15 @@ class Maze:
                 
         return random.choice(dicton)
 
-    def is_item(self, spot, rands):
-        for i in rands:
+    def is_item(self, spot, items):
+        for i in items:
             if spot == i:
+                return True
+            
+        return False
+
+    def is_exit(self,spot,exit_):
+        if spot == exit_:
                 return True
             
         return False
