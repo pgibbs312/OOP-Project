@@ -17,6 +17,11 @@ class Maze:
         
    
     def can_move_to(self, line_num, col_num):
+        """
+        Method dictating what spaces can be walked through
+
+        :returns: bool
+        """
         
         charac = self._lines[line_num][col_num]
         if charac == "X":
@@ -25,6 +30,10 @@ class Maze:
             return True
 
     def display(self):
+        """
+        Method to display the maze made from the text file
+        prints image based on coordinates
+        """
         items = [self.find_random_spot() for i in range(4)]
         exit_ = self.find_random_spot()
 
@@ -43,7 +52,9 @@ class Maze:
 
     def find_random_spot(self):
         """
-        Method made to randomly select *empty spaces* in the maze
+        Method made to randomly select "empty spaces" in the maze
+
+        :returns: tuple
         """
         dicton=[]
         for i,line in enumerate(self._lines):
@@ -55,6 +66,18 @@ class Maze:
         return random.choice(dicton)
 
     def is_item(self, spot, items):
+        """
+        Checks a spot on the grid while it's generating to see 
+        if its coordinates match any of those of the item points
+
+        :param spot: the spot that's potentially the exit
+        :type spot: tuple
+
+        :param items: the spots that should be the items
+        :type items: list (of tuples)
+
+        :returns: Bool
+        """ 
         for i in items:
             if spot == i:
                 return True
@@ -62,6 +85,18 @@ class Maze:
         return False
 
     def is_exit(self,spot,exit_):
+        """
+        Checks a spot on the grid while it's generating to see 
+        if its coordinates match those of the exit point
+
+        :param spot: the spot that's potentially the exit
+        :type spot: tuple
+
+        :param exit_: the spot that should be the exit
+        :type exit_: tuple
+
+        :returns: Bool
+        """ 
         if spot == exit_:
                 return True
             
@@ -76,7 +111,8 @@ if __name__=="__main__":
     # window = pygame.display.set_mode((500, 500))
     # window.fill((100, 100, 100))
     # pygame.display.flip()
-
+    """Pygame initialization commented out. Uncomment when attempting to implement the game screen """
+    
     maze_file="maze.txt"
     my_maze = Maze(maze_file)
     
