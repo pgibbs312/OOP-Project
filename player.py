@@ -1,3 +1,5 @@
+import pygame
+import pygame.locals
 
 class Player:
     def __init__(self, x, y):

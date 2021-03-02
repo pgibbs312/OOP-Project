@@ -1,18 +1,24 @@
 import random
+import pygame
+import pygame.locals
 
-class Maze:
+class Maze(pygame.sprite.Sprite):
     """
     Class representing the maze 
 
     :Param file_name: the nameof the text file that traces the maze
     :Type file_name: string
     """
-    def __init__(self, file_name_):
-
+    def __init__(self, file_name_,win_width_,win_height_):
+        super().__init__()
         with open(file_name_,'r') as my_file:
             lines_=my_file.readlines()
 
         self._lines = lines_
+        self._width = len(self._lines[0])
+        self._height =len(self._lines)
+        self._x_scale = win_width_ * self._width
+        self._y_scale = win_height_ * self._height
         
    
     def can_move_to(self, line_num, col_num):
@@ -28,17 +34,16 @@ class Maze:
         else:
             return True
 
-    def display(self):
+    def display(self,):
         """
         Method to display the maze made from the text file
         prints image based on coordinates
         """
         items = [self.find_random_spot() for i in range(4)]
-        print(items)
+        
         while(len(set(items))!=4):
             items = list(set(items))
             items.append(self.find_random_spot())
-        print(items)
         
 
         for x,line in enumerate(self._lines):
@@ -47,6 +52,8 @@ class Maze:
                     print("O",end="") 
                 if (self.is_exit(x,y)):
                     print("E",end="")
+                if (self.is_player()):
+                    print(player)
                 else:
                     print(self._lines[x][y],end="")
             print("")
@@ -104,14 +111,15 @@ class Maze:
         else:
             return False
 
+    def is_player(self,line,col):
 
-    # window = pygame.display.set_mode((500, 500))
-    # window.fill((100, 100, 100))
-    # pygame.display.flip()
-    """Pygame initialization commented out. Uncomment when attempting to implement the game screen """
-    
-    maze_file="maze.txt"
-    my_maze = Maze(maze_file)
-    
-    my_maze.display()
+        charac = self._lines[line][col]
+        if charac == "P":
+            return True
+        else:
+            return False
+
+
+
+
     

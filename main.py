@@ -15,6 +15,8 @@ def main():
     as well as the game loop
     
     """
+    pygame.init()
+
     run = True
     FPS = 60
     level = 0
@@ -23,7 +25,10 @@ def main():
     lost_font = pygame.font.SysFont("comicsans", 60)
 
     player_vel = 5
-    player = Player(50, 50)
+    #player = Player(50, 50)
+
+    maze = Maze("maze.txt")
+
     clock = pygame.time.Clock()
     #draw text could also add a new function here that is responsible for 
     #drawing the text
@@ -38,15 +43,21 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        
+
+        maze.display()
+
         keys = pygame.key.get_pressed()
-    
+       
         if keys[pygame.K_a]:
-            player.x -= player_vel
+            if maze.can_move_to(player.x-player_vel,player.y):
+                player.x -= player_vel
         if keys[pygame.K_d]:
-            player.x += player_vel
+            if maze.can_move_to(player.x+player_vel,player.y):
+                player.x += player_vel
         if keys[pygame.K_w]:
-            player.y -= player_vel
+            if maze.can_move_to(player.x,player.y-player_vel):
+                player.y -= player_vel
         if keys[pygame.K_s]:
-            player.y += player_vel
+            if maze.can_move_to(player.x,player.y+player_vel):
+                player.y += player_vel
 main()
