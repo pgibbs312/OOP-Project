@@ -120,6 +120,47 @@ if __name__=="__main__":
     my_maze = Maze(maze_file)
     
     my_maze.display()
+    
+    player_x=0
+    player_y=0
+    running= True
+    while running:
+        if direction == "w" or direction == "W":
+            if player_y==0:
+                player_y=0
+
+            elif my_maze.is_exit(player_x, player_y-1):
+                running= False
+
+            elif my_maze.can_move_to(player_x, player_y-1):
+                player_y-=1
+
+
+        elif direction == "s" or direction == "S":
+            if my_maze.can_move_to(player_x, player_y+1):
+                player_y+=1
+
+            elif my_maze.is_exit(player_x, player_y+1):
+                running= False
+            
+    
+
+        elif direction == "A" or direction == "a":
+            if my_maze.can_move_to(player_x-1, player_y):
+                player_x-=1
+
+            elif my_maze.is_exit(player_x-1, player_y):
+                running= False
+
+
+        elif direction == "d" or direction == "D":
+            if my_maze.can_move_to(player_x+1, player_y):
+                player_x+=1
+
+            elif my_maze.is_exit(player_x+1, player_y):
+                running= False
+
+        print(player_x,player_y)
 
 
 
