@@ -27,7 +27,7 @@ def main():
     clock = pygame.time.Clock()
     #draw text could also add a new function here that is responsible for 
     #drawing the text
-    level_lable = main_font.render(f"Level: {level}", 1 (255, 255, 255))
+    level_lable = main_font.render(f"Level: {level}", 1, (255, 255, 255))
 
     WIN.blit(level_lable, (10, 10))
 
