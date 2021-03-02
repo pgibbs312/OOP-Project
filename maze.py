@@ -2,24 +2,29 @@ import random
 import pygame
 import pygame.locals
 
-class Maze(pygame.sprite.Sprite):
+class Maze: #(pygame.sprite.Sprite):
     """
     Class representing the maze 
 
     :Param file_name: the nameof the text file that traces the maze
     :Type file_name: string
     """
-    def __init__(self, file_name_,win_width_,win_height_):
-        super().__init__()
+    def __init__(self, file_name_):
+        #super().__init__()
+
         with open(file_name_,'r') as my_file:
             lines_=my_file.readlines()
 
         self._lines = lines_
         self._width = len(self._lines[0])
         self._height =len(self._lines)
-        self._x_scale = win_width_ * self._width
-        self._y_scale = win_height_ * self._height
-        
+
+        self._x_scale = int(self._width/700)
+        self._y_scale = int(self._height/700)
+
+        #self._player = player
+
+        self._surface = pygame.Surface((700,700))
    
     def can_move_to(self, line_num, col_num):
         """
@@ -34,7 +39,7 @@ class Maze(pygame.sprite.Sprite):
         else:
             return True
 
-    def display(self,):
+    def display(self):
         """
         Method to display the maze made from the text file
         prints image based on coordinates
@@ -48,15 +53,35 @@ class Maze(pygame.sprite.Sprite):
 
         for x,line in enumerate(self._lines):
             for y,space in enumerate(line):
+
                 if (self.is_item((x,y), items)):
-                    print("O",end="") 
+                    item = pygame.Surface((self._x_scale,self._y_scale))
+                    pygame.draw.circle(item,(200,100,150),(self._x_scale/2,self._y_scale/2),(self._x_scale/4))
+
+                    self._surface.blit(item,(x*self._x_scale,y*self._y_scale))
+                
                 if (self.is_exit(x,y)):
-                    print("E",end="")
-                if (self.is_player()):
-                    print(player)
-                else:
-                    print(self._lines[x][y],end="")
-            print("")
+                    the_exit = pygame.draw.rect(self.surface,(),(0,0,self._x_scale,self._y_scale))
+                    self._surface.blit(the_exit,(x*self._x_scale,y*self._y_scale))
+                
+                if (self.is_player(x,y)):
+                    #self._player.x=x
+                    #self._player.y=y
+
+                    player = pygame.Surface((self._x_scale,self._y_scale))
+                    pygame.draw.circle(player,(0,0,250),(self._x_scale/2))
+
+                    self._surface.blit(player,(x*self._x_scale,y*self._y_scale))
+
+                if not(self.can_move_to(x,y)):
+                    wall = pygame.Surface((self._x_scale,self._y_scale))
+                    pygame.draw.rect(wall,(250,0,0),(0,0,self._x_scale,self._y_scale))
+                    self._surface.blit(wall,(x*self._x_scale,y*self._y_scale))
+                # else:
+                #     print(self._lines[x][y],end="")
+            
+            return self._surface
+
 
     def find_random_spot(self):
         """
@@ -119,7 +144,24 @@ class Maze(pygame.sprite.Sprite):
         else:
             return False
 
+if __name__ == "__main__":
+    pygame.init()
+    #pygame.locals.init()
+    width, height = 800, 800
+    window = pygame.display.set_mode((width, height))
+    window.fill((0,0,0))
+    
+    run = True
 
+    pygame.display.set_caption("Maze Game")
+    maze=Maze("maze.txt")
+    made_maze = maze.display()
+    window.blit(made_maze,(0,800))
+
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
 
 
     
