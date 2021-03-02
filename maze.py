@@ -35,10 +35,12 @@ class Maze:
         prints image based on coordinates
         """
         items = [self.find_random_spot() for i in range(4)]
-        exit_ = self.find_random_spot()
-
-        while(exit_ in items):
-            exit_ = self.find_random_spot()
+        print(items)
+        while(len(set(items))!=4):
+            items = list(set(items))
+            items.append(self.find_random_spot())
+        print(items)
+        
 
         for x,line in enumerate(self._lines):
             for y,space in enumerate(line):
