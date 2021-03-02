@@ -61,7 +61,8 @@ class Maze: #(pygame.sprite.Sprite):
                     self._surface.blit(item,(x*self._x_scale,y*self._y_scale))
                 
                 if (self.is_exit(x,y)):
-                    the_exit = pygame.draw.rect(self.surface,(),(0,0,self._x_scale,self._y_scale))
+                    the_exit = pygame.Surface((self._x_scale,self.y_scale))
+                    the_exit.fill((0,250,0))
                     self._surface.blit(the_exit,(x*self._x_scale,y*self._y_scale))
                 
                 if (self.is_player(x,y)):
@@ -75,7 +76,7 @@ class Maze: #(pygame.sprite.Sprite):
 
                 if not(self.can_move_to(x,y)):
                     wall = pygame.Surface((self._x_scale,self._y_scale))
-                    pygame.draw.rect(wall,(250,0,0),(0,0,self._x_scale,self._y_scale))
+                    wall.fill((250,0,0))
                     self._surface.blit(wall,(x*self._x_scale,y*self._y_scale))
                 # else:
                 #     print(self._lines[x][y],end="")
@@ -155,8 +156,8 @@ if __name__ == "__main__":
 
     pygame.display.set_caption("Maze Game")
     maze=Maze("maze.txt")
-    made_maze = maze.display()
-    window.blit(made_maze,(0,800))
+    #made_maze = maze.display()
+    window.blit(maze.display(),(0,800))
 
     while run:
         for event in pygame.event.get():
