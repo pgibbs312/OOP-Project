@@ -61,7 +61,7 @@ class Maze: #(pygame.sprite.Sprite):
                     self._surface.blit(item,(x*self._x_scale,y*self._y_scale))
                 
                 if (self.is_exit(x,y)):
-                    the_exit = pygame.Surface((self._x_scale,self.y_scale))
+                    the_exit = pygame.Surface((self._x_scale,self._y_scale))
                     the_exit.fill((0,250,0))
                     self._surface.blit(the_exit,(x*self._x_scale,y*self._y_scale))
                 
@@ -70,7 +70,7 @@ class Maze: #(pygame.sprite.Sprite):
                     #self._player.y=y
 
                     player = pygame.Surface((self._x_scale,self._y_scale))
-                    pygame.draw.circle(player,(0,0,250),(self._x_scale/2))
+                    pygame.draw.circle(player,(0,0,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/2))
 
                     self._surface.blit(player,(x*self._x_scale,y*self._y_scale))
 
@@ -82,7 +82,6 @@ class Maze: #(pygame.sprite.Sprite):
                 #     print(self._lines[x][y],end="")
             
             return self._surface
-
 
     def find_random_spot(self):
         """
@@ -147,7 +146,7 @@ class Maze: #(pygame.sprite.Sprite):
 
 if __name__ == "__main__":
     pygame.init()
-    #pygame.locals.init()
+    
     width, height = 800, 800
     window = pygame.display.set_mode((width, height))
     window.fill((0,0,0))
@@ -157,7 +156,9 @@ if __name__ == "__main__":
     pygame.display.set_caption("Maze Game")
     maze=Maze("maze.txt")
     #made_maze = maze.display()
-    window.blit(maze.display(),(0,800))
+    #window.blit(maze.display(),(0,800))
+
+    window.blit(maze.display(),(0,0))
 
     while run:
         for event in pygame.event.get():
