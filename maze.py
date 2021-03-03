@@ -16,16 +16,24 @@ class Maze: #(pygame.sprite.Sprite):
             lines_=my_file.readlines()
 
         self._lines = lines_
-        self._width = len(self._lines[0])
-        self._height =len(self._lines)
+        self._width = len(self._lines)
+        self._height =len(self._lines[0])
 
-        self._x_scale = int(self._width/700)
-        self._y_scale = int(self._height/700)
+        self._x_scale = (700/self._width)
+        self._y_scale = (700/self._height)
 
         #self._player = player
 
-        self._surface = pygame.Surface((700,700))
+        self.surface = pygame.Surface((800,800))
    
+    @property
+    def surface(self):
+        return self._surface
+
+    @surface.setter
+    def surface(self,value):
+        self._surface = value
+
     def can_move_to(self, line_num, col_num):
         """
         Method dictating what spaces can be walked through
@@ -50,38 +58,38 @@ class Maze: #(pygame.sprite.Sprite):
             items = list(set(items))
             items.append(self.find_random_spot())
         
+        surface = pygame.Surface((700,700))
 
         for x,line in enumerate(self._lines):
             for y,space in enumerate(line):
 
                 if (self.is_item((x,y), items)):
                     item = pygame.Surface((self._x_scale,self._y_scale))
-                    pygame.draw.circle(item,(200,100,150),(self._x_scale/2,self._y_scale/2),(self._x_scale/4))
+                    pygame.draw.circle(item,(250,250,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/4))
 
-                    self._surface.blit(item,(x*self._x_scale,y*self._y_scale))
+                    surface.blit(item,(x*self._x_scale,y*self._y_scale))
                 
                 if (self.is_exit(x,y)):
+                    print("ding")
                     the_exit = pygame.Surface((self._x_scale,self._y_scale))
                     the_exit.fill((0,250,0))
-                    self._surface.blit(the_exit,(x*self._x_scale,y*self._y_scale))
+                    surface.blit(the_exit,(x*self._x_scale,y*self._y_scale))
                 
                 if (self.is_player(x,y)):
                     #self._player.x=x
                     #self._player.y=y
 
                     player = pygame.Surface((self._x_scale,self._y_scale))
-                    pygame.draw.circle(player,(0,0,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/2))
+                    pygame.draw.circle(player,(0,0,250),(self._y_scale/2,self._x_scale/2),(self._x_scale/2))
 
-                    self._surface.blit(player,(x*self._x_scale,y*self._y_scale))
+                    surface.blit(player,(x*self._x_scale,y*self._y_scale))
 
                 if not(self.can_move_to(x,y)):
                     wall = pygame.Surface((self._x_scale,self._y_scale))
                     wall.fill((250,0,0))
-                    self._surface.blit(wall,(x*self._x_scale,y*self._y_scale))
-                # else:
-                #     print(self._lines[x][y],end="")
+                    surface.blit(wall,(x*self._x_scale,y*self._y_scale))
             
-            return self._surface
+            self.surface = surface
 
     def find_random_spot(self):
         """
@@ -149,21 +157,23 @@ if __name__ == "__main__":
     
     width, height = 800, 800
     window = pygame.display.set_mode((width, height))
-    window.fill((0,0,0))
+    window.fill((250,250,250))
     
     run = True
 
     pygame.display.set_caption("Maze Game")
     maze=Maze("maze.txt")
-    #made_maze = maze.display()
-    #window.blit(maze.display(),(0,800))
+    maze.display()
 
-    window.blit(maze.display(),(0,0))
+    print(type(maze.surface))
+    window.blit(maze.surface,(10,10))
+
+    pygame.display.update()
 
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-
+        
 
     
