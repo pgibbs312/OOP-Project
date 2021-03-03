@@ -1,7 +1,7 @@
 import random
 import pygame
 import pygame.locals
-from player.py import Player
+#from player import Player
 
 class Maze:
     """
@@ -10,7 +10,7 @@ class Maze:
     :Param file_name: the nameof the text file that traces the maze
     :Type file_name: string
     """
-    def __init__(self, file_name_):
+    def __init__(self, file_name_,player_):
         
         with open(file_name_,'r') as my_file:
             lines_=my_file.readlines()
@@ -22,7 +22,7 @@ class Maze:
         self._x_scale = int(700/self._width)
         self._y_scale = int(700/self._height)
         
-        #self._player = player
+        self.player = player_
 
         self.surface = pygame.Surface((800,800))
 
@@ -35,6 +35,22 @@ class Maze:
     @surface.setter
     def surface(self,value):
         self._surface = value
+
+    @property
+    def items(self):
+        return self._items
+
+    @items.setter
+    def items(self,value):
+        self._items=value
+
+    # @property
+    # def player(self):
+    #     return self._player
+
+    # @player.setter
+    # def player(self,value):
+    #    self._player=value
 
     def can_move_to(self, col_num, line_num):
         """
@@ -66,10 +82,10 @@ class Maze:
             for x,space in enumerate(line):
 
                 if (self.is_item((x,y), items)):
-                    img = pygame.Surface((self._x_scale,self._y_scale))
-                    pygame.draw.circle(img,(250,250,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/4))
-                    item=Item([x,y],img)
-                    self.items.append((x,y))
+                    img = pygame.image.load("item.png")
+                    #pygame.draw.circle(img,(250,250,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/4))
+                    item_=Item([x*self._x_scale,y*self._y_scale],img)
+                    self.items.append(item_)
                 
                 elif (self.is_exit(x,y)):
                     
@@ -77,12 +93,15 @@ class Maze:
                     item.fill((0,250,0))
                     
                 elif (self.is_player(x,y)):
-                    
-                    img = pygame.Surface((self._x_scale,self._y_scale))
-                    pygame.draw.circle(img,(0,0,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/2))
-                    player=Player(x,y,img)
+                    # play_x = x
+                    # play_y = y
+                    # img_player = pygame.image.load("player.png")
+                    # pygame.draw.circle(img_player,(0,0,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/2))
+                    # self.player=[x,y,img_player]
+                    self.player.rect.x = x
+                    self.player.rect.y = y
 
-                elif not(self.can_move_to(x,y)):
+                elif not(self.can_move_to(x,y)) and not(self.is_player(x,y)):
                     
                     item = pygame.Surface((self._x_scale,self._y_scale))
                     item.fill((250,0,0))
@@ -94,8 +113,7 @@ class Maze:
                 surface.blit(item,(x*self._x_scale,y*self._y_scale))
 
         self.surface = surface
-        return player
-
+        
     def find_random_spot(self):
         """
         Method made to randomly select "empty spaces" in the maze
@@ -143,7 +161,7 @@ class Maze:
 
         :returns: Bool
         """ 
-        charac = self._lines[line_num][col_num]
+        charac = self._lines[line][col]
         if charac == "E":
             return True
         else:
@@ -160,10 +178,10 @@ class Maze:
 class Item(pygame.sprite.Sprite):
     def __init__(self,location,image):
         super().__init__()
-        self._image=image
-        self._rect=self.image.get_rect()
-        self._rect.x=location[0]
-        self._rect.y=location[1]
+        self.image=image
+        self.rect=self.image.get_rect()
+        self.rect.x=location[0]
+        self.rect.y=location[1]
 
 if __name__ == "__main__":
     pygame.init()

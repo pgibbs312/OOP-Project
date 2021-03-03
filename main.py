@@ -1,7 +1,7 @@
 import pygame
 import time 
-from maze.py import Maze
-from player.py import Player
+from maze import Maze
+from player import Player
 pygame.font.init()
 pygame.init()
 
@@ -14,10 +14,9 @@ def main():
     width, height = 800, 800
     window = pygame.display.set_mode((width, height))
     window.fill((0,0,0))
-    
+    clock = pygame.time.Clock()
+
     pygame.display.set_caption("Maze Game")
-    
-    
 
     run = True
 
@@ -27,19 +26,29 @@ def main():
     #player_vel = 5
     #player = Player(50, 50)
 
-    maze = Maze("maze.txt")
-    player=maze.display()
+    player=Player()
+
+    maze = Maze("maze.txt",player)
+    maze.display()
+
+    # play_x,play_y,img_player = maze.player
+    # player=Player(play_x,play_y,img_player)    
+
+    items=pygame.sprite.Group()
+    for i in maze.items:
+        items.add(i) 
     #draw text could also add a new function here that is responsible for 
     #drawing the text
     
+    window.blit(maze.surface, (10,10))
+    pygame.display.update()
 
-    window.blit(maze.surface, (800,0))
 
     while run:
-        clock.tick(FPS)
+        clock.tick(30)
         # can make a redraw_window() to refresh the display with all the text
 
-        for sprite in asteroids.sprites():
+        for sprite in items.sprites():
             if not sprite.alive():
                 del sprite
 
@@ -52,6 +61,7 @@ def main():
 
         keys = pygame.key.get_pressed()
        
+         
         if keys[pygame.K_a]:
             player.move("x",-1,maze)
         if keys[pygame.K_d]:
@@ -74,6 +84,9 @@ def main():
                 print("You Win")
             else:
                 print("You Lost")
+        
+        pygame.display.update()
+
 
 
         
