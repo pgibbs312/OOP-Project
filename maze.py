@@ -1,6 +1,7 @@
 import random
 import pygame
 import pygame.locals
+from player.py import Player
 
 class Maze:
     """
@@ -16,17 +17,16 @@ class Maze:
 
         self._lines = lines_
         self._width = len(self._lines[0])
-        print(self._width)
         self._height =len(self._lines)
-        print(self._height)
 
         self._x_scale = int(700/self._width)
         self._y_scale = int(700/self._height)
-        print(self._x_scale)
-        print(self._y_scale)
+        
         #self._player = player
 
         self.surface = pygame.Surface((800,800))
+
+        self.items= []
    
     @property
     def surface(self):
@@ -66,8 +66,10 @@ class Maze:
             for x,space in enumerate(line):
 
                 if (self.is_item((x,y), items)):
-                    item = pygame.Surface((self._x_scale,self._y_scale))
-                    pygame.draw.circle(item,(250,250,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/4))
+                    img = pygame.Surface((self._x_scale,self._y_scale))
+                    pygame.draw.circle(img,(250,250,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/4))
+                    item=Item([x,y],img)
+                    self.items.append((x,y))
                 
                 elif (self.is_exit(x,y)):
                     
@@ -76,8 +78,9 @@ class Maze:
                     
                 elif (self.is_player(x,y)):
                     
-                    item = pygame.Surface((self._x_scale,self._y_scale))
-                    pygame.draw.circle(item,(0,0,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/2))
+                    img = pygame.Surface((self._x_scale,self._y_scale))
+                    pygame.draw.circle(img,(0,0,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/2))
+                    player=Player(x,y,img)
 
                 elif not(self.can_move_to(x,y)):
                     
@@ -91,6 +94,7 @@ class Maze:
                 surface.blit(item,(x*self._x_scale,y*self._y_scale))
 
         self.surface = surface
+        return player
 
     def find_random_spot(self):
         """
@@ -126,16 +130,16 @@ class Maze:
             
         return False
 
-    def is_exit(self, col_num, line_num):
+    def is_exit(self, col, line):
         """
         Checks a spot on the grid while it's generating to see 
         if its coordinates match those of the exit point
 
-        :param spot: the spot that's potentially the exit
-        :type spot: tuple
+        :param col: the col of the point being checked
+        :type col: int
 
-        :param exit_: the spot that should be the exit
-        :type exit_: tuple
+        :param line:  the line of the point being checked
+        :type line: int
 
         :returns: Bool
         """ 
@@ -153,6 +157,14 @@ class Maze:
         else:
             return False
 
+class Item(pygame.sprite.Sprite):
+    def __init__(self,location,image):
+        super().__init__()
+        self._image=image
+        self._rect=self.image.get_rect()
+        self._rect.x=location[0]
+        self._rect.y=location[1]
+
 if __name__ == "__main__":
     pygame.init()
     
@@ -169,7 +181,7 @@ if __name__ == "__main__":
     print(type(maze.surface))
     window.blit(maze.surface,(10,10))
 
-    pygame.display.flip()
+    pygame.display.update()
 
     while run:
         for event in pygame.event.get():

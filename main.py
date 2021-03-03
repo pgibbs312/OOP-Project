@@ -3,11 +3,7 @@ import time
 from maze.py import Maze
 from player.py import Player
 pygame.font.init()
-
-WIDTH, HEIGHT = 800, 800
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Maze Game")
-
+pygame.init()
 
 def main():
     """ 
@@ -15,49 +11,73 @@ def main():
     as well as the game loop
     
     """
-    pygame.init()
+    width, height = 800, 800
+    window = pygame.display.set_mode((width, height))
+    window.fill((0,0,0))
+    
+    pygame.display.set_caption("Maze Game")
+    
+    
 
     run = True
-    FPS = 60
-    level = 0
 
     main_font = pygame.font.SysFont("comicsans", 50)
     lost_font = pygame.font.SysFont("comicsans", 60)
 
-    player_vel = 5
+    #player_vel = 5
     #player = Player(50, 50)
 
     maze = Maze("maze.txt")
-
-    clock = pygame.time.Clock()
+    player=maze.display()
     #draw text could also add a new function here that is responsible for 
     #drawing the text
-    level_lable = main_font.render(f"Level: {level}", 1, (255, 255, 255))
+    
 
-    WIN.blit(level_lable, (10, 10))
+    window.blit(maze.surface, (800,0))
 
     while run:
         clock.tick(FPS)
         # can make a redraw_window() to refresh the display with all the text
 
+        for sprite in asteroids.sprites():
+            if not sprite.alive():
+                del sprite
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
-        maze.display()
+        
 
         keys = pygame.key.get_pressed()
        
         if keys[pygame.K_a]:
-            if maze.can_move_to(player.x-player_vel,player.y):
-                player.x -= player_vel
+            player.move("x",-1,maze)
         if keys[pygame.K_d]:
-            if maze.can_move_to(player.x+player_vel,player.y):
-                player.x += player_vel
+            player.move("x",1,maze)
         if keys[pygame.K_w]:
-            if maze.can_move_to(player.x,player.y-player_vel):
-                player.y -= player_vel
+            player.move("y",1,maze)
         if keys[pygame.K_s]:
-            if maze.can_move_to(player.x,player.y+player_vel):
-                player.y += player_vel
-main()
+            player.move("y",-1,maze)
+        
+        acquired = pygame.sprite.spritecollide(player,items,dokill=True)
+
+        for i in acquired:
+            player.pickup()
+        
+        pygame.display.update()
+
+        if maze.is_exit(player.rect.x,player.rect.y):
+            run=false
+            if player.backpack==4:
+                print("You Win")
+            else:
+                print("You Lost")
+
+
+        
+
+if __name__ == "__main__":
+
+    main()
