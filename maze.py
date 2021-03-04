@@ -39,6 +39,12 @@ class Maze:
         """
         Method dictating what spaces can be walked through
 
+        :param col_num: the column of the location being checked
+        :type col_num: int
+
+        :param line_num: the line of the location being checked
+        :type line_num: int
+
         :returns: bool
         """
         
@@ -50,7 +56,7 @@ class Maze:
 
     def display(self):
         """
-        Method to display the maze made from the text file
+        Method to create the surface of the maze made from the text file
         prints image based on coordinates
         """
         items = [self.find_random_spot() for i in range(4)]
@@ -162,6 +168,20 @@ class Maze:
             return False
 
 class Items(pygame.sprite.Sprite):
+    """
+    Class representing the items on the floor of the maze
+    through a sprite
+
+    :param x: the pixel location of the sprite along the x axis
+    :type x: int
+    
+    :param y: the pixel location of the sprite along the y axis
+    :type y: int
+    
+    :param scales: a set of scales to help center the sprite on the maze grid
+    :type scales: list
+    """
+
     def __init__(self,x,y,scales):
         super().__init__()
         image = pygame.image.load("item.png")

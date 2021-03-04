@@ -3,6 +3,19 @@ import pygame.locals
 #from maze import Maze
 
 class Player(pygame.sprite.Sprite):
+    """
+    Class representing the player in the maze
+    through a sprite
+
+    :param x: the pixel location of the sprite along the x axis
+    :type x: int
+    
+    :param y: the pixel location of the sprite along the y axis
+    :type y: int
+    
+    :param scales: a set of scales to help center the sprite on the maze grid
+    :type scales: list
+    """
     def __init__(self,x,y,scales):
         super().__init__()
         image = pygame.image.load("player.png")
@@ -23,6 +36,10 @@ class Player(pygame.sprite.Sprite):
 
 
     def pickup(self):
+        """
+        Method to put an item in the player's backpack
+        """
+
         self.backpack+=1
 
 
