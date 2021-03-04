@@ -26,8 +26,6 @@ def main():
 
     run = True
 
-    # main_font = pygame.font.SysFont("comicsans", 50)
-    # lost_font = pygame.font.SysFont("comicsans", 60)
 
     """create the images of the maze, player, and items."""
     maze = Maze("maze.txt")
@@ -85,7 +83,7 @@ def main():
         """ Delete items that are picked up by the player"""
         for i,item in enumerate(items):
             if item.rect == player.rect:
-                print("same spot")
+                
                 player.pickup()
                 items.pop(i)
                 
