@@ -3,13 +3,13 @@ import pygame.locals
 #from maze import Maze
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,x,y):
+    def __init__(self,x,y,scales):
         super().__init__()
         image = pygame.image.load("player.png")
-        self.image = pygame.transform.scale(image, (50, 50))
+        self.image = pygame.transform.scale(image, (25, 25))
         self.rect = self.image.get_rect()
-        self.rect.x=x
-        self.rect.y=y
+        self.rect.x=x+scales[0]/2
+        self.rect.y=y+scales[1]/2
 
         self.backpack = 0
     

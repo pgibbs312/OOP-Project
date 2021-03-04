@@ -1,7 +1,7 @@
 import random
 import pygame
 import pygame.locals
-#from player import Player
+
 
 class Maze:
     """
@@ -23,7 +23,7 @@ class Maze:
         self._y_scale = int(700/self._height)#pixels per grid spa
         
         self.player = 0
-        self._items = pygame.sprite.Group()
+        self._items = []
 
         self.surface = pygame.Surface((800,800))
    
@@ -66,8 +66,12 @@ class Maze:
 
 
                 if (self.is_item((x,y), items)):
+                    # item = pygame.Surface((self._x_scale,self._y_scale))
+                    # pygame.draw.circle(item,(250,250,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/4))
                     item = pygame.Surface((self._x_scale,self._y_scale))
-                    pygame.draw.circle(item,(250,250,250),(self._x_scale/2,self._y_scale/2),(self._x_scale/4))
+                    item.fill((0,0,0))
+
+                    self._items.append([x*self._x_scale,y*self._y_scale,self._x_scale,self._y_scale])
                 
                 elif (self.is_exit(x,y)):
                     
@@ -78,7 +82,7 @@ class Maze:
                     item = pygame.Surface((self._x_scale,self._y_scale))
                     item.fill((0,0,0))
 
-                    self.player = ([x*self._x_scale,y*self._y_scale])
+                    self.player = ([x*self._x_scale,y*self._y_scale,self._x_scale,self._y_scale])
                     
 
                 elif not(self.can_move_to(x,y)):
@@ -156,6 +160,16 @@ class Maze:
             return True
         else:
             return False
+
+class Items(pygame.sprite.Sprite):
+    def __init__(self,x,y,scales):
+        super().__init__()
+        image = pygame.image.load("item.png")
+        self.image = pygame.transform.scale(image, (25, 25))
+        self.rect = self.image.get_rect()
+        self.rect.x=x+scales[0]/2
+        self.rect.y=y+scales[1]/2
+
 
 if __name__ == "__main__":
     pygame.init()
