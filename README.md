@@ -6,7 +6,6 @@
 #Dependencies:
 - win is called on if the players backpack contains all 4 items whn interacting witht the exit
 - Loss is called when the player reaches the end but their backpack doesn't contain all 4 items
-- 
 
 #How to run the program:
 - In a virtual enviroment run the command "py main.py"
