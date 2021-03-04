@@ -16,11 +16,11 @@ class Maze:
             lines_=my_file.readlines()
 
         self._lines = lines_
-        self._width = len(self._lines[0])
-        self._height =len(self._lines)
+        self._width = len(self._lines[0]) #grid space
+        self._height =len(self._lines)    #grid space
     
-        self._x_scale = int(700/self._width)
-        self._y_scale = int(700/self._height)
+        self._x_scale = int(700/self._width) #pixels per grid space
+        self._y_scale = int(700/self._height)#pixels per grid spa
         
         self.player = 0
         self._items = pygame.sprite.Group()
