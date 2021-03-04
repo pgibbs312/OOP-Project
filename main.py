@@ -45,7 +45,7 @@ def main():
     #draw text could also add a new function here that is responsible for 
     #drawing the text
     
-    window.blit(maze.surface, (10,10))
+    window.blit(maze.surface, (0,0))
     pygame.display.update()
 
     while run:
@@ -61,6 +61,9 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
+        for item in items:
+            if not item.alive():
+                del item
         
 
         keys = pygame.key.get_pressed()
@@ -97,21 +100,22 @@ def main():
                     #-- move the player down by x pixels
                     player.rect.y = min(player.rect.y + maze._y_scale, 700)
                     
-
-        #acquired = pygame.sprite.spritecollide(player,items,dokill=True)
-
-        # for i in acquired:
-        #     player.pickup()
         
+        for i,item in enumerate(items):
+            if item.rect == player.rect:
+                print("same spot")
+                player.pickup()
+                items.pop(i)
+                item.kill()
 
         if maze.is_exit(int(player.rect.x/maze._x_scale),int(player.rect.y/maze._y_scale)):
             run=False
-            if player.backpack==4:
+            if player.backpack>=4:
                 print("You Win")
             else:
                 print("You Lost")
         
-            
+        window.blit(maze.surface,(0,0))
         window.blit(player.image, player.rect)
         for i in items:
             window.blit(i.image,i.rect)
