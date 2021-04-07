@@ -1,8 +1,8 @@
 import pygame
 import time 
-from maze import Maze
-from maze import Items
-from player import Player
+from OOP-PROJECT.controllers.maze import Maze
+from OOP-PROJECT.controllers.maze import Items
+from OOP-PROJECT.controllers.player import Player
 
 pygame.font.init()
 pygame.init()
@@ -28,7 +28,7 @@ def main():
 
 
     """create the images of the maze, player, and items."""
-    maze = Maze("maze.txt")
+    maze = Maze("Views\maze.txt")
     maze.display()
     player = Player(maze.player[0],maze.player[1],[maze.player[2],maze.player[3]])
     items = []
