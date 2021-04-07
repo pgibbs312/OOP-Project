@@ -3,9 +3,12 @@ import time
 from models.maze import Maze
 from models.maze import Items
 from models.player import Player
+from models.score import Score
 
 pygame.font.init()
 pygame.init()
+font = pygame.font.Font(None, 40)
+blue = pygame.Color('dodgerblue')
 
 def main():
     """ 
@@ -19,6 +22,14 @@ def main():
     window = pygame.display.set_mode((width, height))
     window.fill((0,0,0))
     clock = pygame.time.Clock()
+    
+    timer = 100
+    time_pass=0
+
+    time_txt = font.render(f"Time: {str(round(timer))}",True,blue)
+    window.blit(time_txt, (0,0))
+    
+    score=0
     
 
     pygame.display.set_caption("Maze Game")
@@ -36,13 +47,15 @@ def main():
         items.append(Items(i[0],i[1],[i[2],i[3]]))
     
     """Place the images on the game window"""
-    window.blit(maze.surface, (0,0))
+    window.blit(maze.surface, (0,-1))
     pygame.display.update()
 
     """Running loop"""
     while run:
         clock.tick(30)
-
+        dt=clock.tick(30)
+        print(dt)
+    
         """ Stop the game if the game is quit """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -106,6 +119,28 @@ def main():
         if move: 
             pygame.time.delay(400)
 
+        """Timer that adds to score and ends game if it reaches 0"""
+
+        time_pass+=dt
+        print(time_pass)
+        if 1 <= time_pass/1000:
+            timer-=1
+            time_pass=0
+
+        time_txt = font.render(f"Timer: {str(round(timer))}",True,blue)
+        window.blit(time_txt, (0,0))
+        pygame.display.update()
+
+        if timer <= 0:
+            run = False
+            print("You ran out of time")
+
+            
+    print("Game Over")
+
+    print("Final score: bupkis")
+    name = input("Please tell me your name: ")
+    
 
         
 

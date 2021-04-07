@@ -184,7 +184,7 @@ class Items(pygame.sprite.Sprite):
 
     def __init__(self,x,y,scales):
         super().__init__()
-        image = pygame.image.load("item.png")
+        image = pygame.image.load("Views/item.png")
         self.image = pygame.transform.scale(image, (25, 25))
         self.rect = self.image.get_rect()
         self.rect.x=x+scales[0]/2

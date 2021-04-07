@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
     """
     def __init__(self,x,y,scales):
         super().__init__()
-        image = pygame.image.load("player.png")
+        image = pygame.image.load("Views/player.png")
         self.image = pygame.transform.scale(image, (25, 25))
         self.rect = self.image.get_rect()
         self.rect.x=x+scales[0]/2
