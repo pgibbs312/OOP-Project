@@ -52,4 +52,13 @@ class Score:
 
         return Score(player_name_=json_data['name'],score_=json_data['score'])
 
-    def to_json(self)
+    def to_json(self):
+        """
+        Logs the score into a json file
+        """
+        # Who could have guessed
+
+        with open("{}".format(self.name),'r') as fb:
+            json.dump({'name':self.player_name,
+            'score':self.score,
+            'date':self.date})
