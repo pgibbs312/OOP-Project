@@ -131,8 +131,8 @@ def main():
             time_pass=0
 
         """Covers the old timer and replaces it before updating."""
-        time_txt = font.render(f"Timer: {str(round(timer))}",True,blue)
-        window.blit(pygame.Surface((300,100)),(0,0))
+        time_txt = font.render("Timer: {}        Backpack: {}".format(str(round(timer)),player.backpack),True,blue)
+        window.blit(pygame.Surface((800,100)),(0,0))
         window.blit(time_txt, (0,0))
         pygame.display.update()
 
@@ -144,7 +144,7 @@ def main():
 
     if msg != "Quit" and msg !="Null":
         score = 100*player.backpack + timer
-        end_bubble = font.render(f"{msg}\nPlease Check the Command line",True,blue)
+        end_bubble = font.render("{}    Please Check the Command line".format(msg),True,blue)
         window.fill((10,10,10))
         window.blit(end_bubble,(10,10))
         pygame.display.update()
