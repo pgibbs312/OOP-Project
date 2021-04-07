@@ -25,7 +25,7 @@ def main():
     window.fill((0,0,0))
     clock = pygame.time.Clock()
     
-    timer = 100
+    timer = 20
     time_pass=0
 
     time_txt = font.render(f"Time: {str(round(timer))}",True,blue)
@@ -130,6 +130,7 @@ def main():
             timer-=1
             time_pass=0
 
+        """Covers the old timer and replaces it before updating."""
         time_txt = font.render(f"Timer: {str(round(timer))}",True,blue)
         window.blit(pygame.Surface((300,100)),(0,0))
         window.blit(time_txt, (0,0))
@@ -139,7 +140,8 @@ def main():
             run = False
             msg = ("You ran out of time")
 
-    
+    """Detects how the game ended, and returns a message"""
+
     if msg != "Quit" and msg !="Null":
         score = 100*player.backpack + timer
         end_bubble = font.render(f"{msg}\nPlease Check the Command line",True,blue)
@@ -147,6 +149,7 @@ def main():
         window.blit(end_bubble,(10,10))
         pygame.display.update()
         
+        """Tells the player what their score was"""
         print(f"Final score: {score}")
         name = input("Please tell me your name: ")
         scr_send = {"name":name,
