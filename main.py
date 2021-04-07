@@ -1,8 +1,8 @@
 import pygame
 import time 
-from controllers.maze import Maze
-from controllers.maze import Items
-from controllers.player import Player
+from models.maze import Maze
+from models.maze import Items
+from models.player import Player
 
 pygame.font.init()
 pygame.init()
