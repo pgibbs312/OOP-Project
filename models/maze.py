@@ -25,7 +25,7 @@ class Maze:
         self.player = 0
         self._items = []
 
-        self.surface = pygame.Surface((800,800))
+        self.surface = pygame.Surface((700,800))
    
     @property
     def surface(self):

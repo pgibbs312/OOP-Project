@@ -1,5 +1,6 @@
 import pygame
 import time 
+import datetime
 from models.maze import Maze
 from models.maze import Items
 from models.player import Player
@@ -48,7 +49,7 @@ def main():
         items.append(Items(i[0],i[1],[i[2],i[3]]))
     
     """Place the images on the game window"""
-    window.blit(maze.surface, (0,-1))
+    window.blit(maze.surface, (0,100))
     pygame.display.update()
 
     """Running loop"""
@@ -111,7 +112,7 @@ def main():
                 msg = ("You Lost")
         
         """ Re-textures the maze first, then the player and remaining items."""
-        window.blit(maze.surface,(0,0))
+        window.blit(maze.surface,(0,100))
         window.blit(player.image, player.rect)
         for i in items:
             window.blit(i.image,i.rect)
@@ -124,12 +125,13 @@ def main():
         """Timer that adds to score and ends game if it reaches 0"""
 
         time_pass+=dt
-        print(time_pass)
+        
         if 1 <= time_pass/1000:
             timer-=1
             time_pass=0
 
         time_txt = font.render(f"Timer: {str(round(timer))}",True,blue)
+        window.blit(pygame.Surface((300,100)),(0,0))
         window.blit(time_txt, (0,0))
         pygame.display.update()
 
@@ -139,11 +141,18 @@ def main():
 
     
     if msg != "Quit" and msg !="Null":
+        score = 100*player.backpack + timer
+        end_bubble = font.render(f"{msg}\nPlease Check the Command line",True,blue)
+        window.fill((10,10,10))
+        window.blit(end_bubble,(10,10))
+        pygame.display.update()
         
-        print(msg)
-
-        print("Final score: bupkis")
+        print(f"Final score: {score}")
         name = input("Please tell me your name: ")
+        scr_send = {"name":name,
+                    "score":score,
+                    "date":datetime.datetime.now().strftime("%c")}
+        print(scr_send)
     
 
         
