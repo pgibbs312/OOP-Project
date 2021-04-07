@@ -18,6 +18,7 @@ def main():
     """
     
     """set the game display"""
+    msg="Null"
     width, height = 800, 800
     window = pygame.display.set_mode((width, height))
     window.fill((0,0,0))
@@ -36,7 +37,7 @@ def main():
     
 
     run = True
-
+    
 
     """create the images of the maze, player, and items."""
     maze = Maze("Views\maze.txt")
@@ -52,14 +53,15 @@ def main():
 
     """Running loop"""
     while run:
-        clock.tick(30)
+        
         dt=clock.tick(30)
-        print(dt)
-    
+        
+        
         """ Stop the game if the game is quit """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                msg = "Quit"
 
         """movement functions for the player class"""
         keys = pygame.key.get_pressed()
@@ -104,9 +106,9 @@ def main():
         if maze.is_exit(int(player.rect.x/maze._x_scale),int(player.rect.y/maze._y_scale)):
             run=False
             if player.backpack>=4:
-                print("You Win")
+                msg = "You Win"
             else:
-                print("You Lost")
+                msg = ("You Lost")
         
         """ Re-textures the maze first, then the player and remaining items."""
         window.blit(maze.surface,(0,0))
@@ -133,13 +135,15 @@ def main():
 
         if timer <= 0:
             run = False
-            print("You ran out of time")
+            msg = ("You ran out of time")
 
-            
-    print("Game Over")
+    
+    if msg != "Quit" and msg !="Null":
+        
+        print(msg)
 
-    print("Final score: bupkis")
-    name = input("Please tell me your name: ")
+        print("Final score: bupkis")
+        name = input("Please tell me your name: ")
     
 
         
