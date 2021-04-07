@@ -62,3 +62,9 @@ class Score:
             json.dump({'name':self.player_name,
             'score':self.score,
             'date':self.date})
+
+    def from_dict(self,dict_):
+        return Score(player_name_=dict_['name'],score_=dict_['score'])
+
+    def to_dict(self):
+        return {'name': self.player_name,'score':self.score}
