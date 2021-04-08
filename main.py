@@ -1,13 +1,11 @@
 import pygame
 import time 
-from maze.py import Maze
-from player.py import Player
+from models.maze import Maze
+from models.maze import Items
+from models.player import Player
+
 pygame.font.init()
-
-WIDTH, HEIGHT = 800, 800
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Maze Game")
-
+pygame.init()
 
 def main():
     """ 
@@ -15,38 +13,102 @@ def main():
     as well as the game loop
     
     """
-    run = True
-    FPS = 60
-    level = 0
-
-    main_font = pygame.font.SysFont("comicsans", 50)
-    lost_font = pygame.font.SysFont("comicsans", 60)
-
-    player_vel = 5
-    player = Player(50, 50)
+    
+    """set the game display"""
+    width, height = 800, 800
+    window = pygame.display.set_mode((width, height))
+    window.fill((0,0,0))
     clock = pygame.time.Clock()
-    #draw text could also add a new function here that is responsible for 
-    #drawing the text
-    level_lable = main_font.render(f"Level: {level}", 1, (255, 255, 255))
+    
 
-    WIN.blit(level_lable, (10, 10))
+    pygame.display.set_caption("Maze Game")
+    
 
+    run = True
+
+
+    """create the images of the maze, player, and items."""
+    maze = Maze("Views\maze.txt")
+    maze.display()
+    player = Player(maze.player[0],maze.player[1],[maze.player[2],maze.player[3]])
+    items = []
+    for i in maze._items:
+        items.append(Items(i[0],i[1],[i[2],i[3]]))
+    
+    """Place the images on the game window"""
+    window.blit(maze.surface, (0,0))
+    pygame.display.update()
+
+    """Running loop"""
     while run:
-        clock.tick(FPS)
-        # can make a redraw_window() to refresh the display with all the text
+        clock.tick(30)
 
+        """ Stop the game if the game is quit """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        
+
+        """movement functions for the player class"""
         keys = pygame.key.get_pressed()
-    
-        if keys[pygame.K_a]:
-            player.x -= player_vel
-        if keys[pygame.K_d]:
-            player.x += player_vel
-        if keys[pygame.K_w]:
-            player.y -= player_vel
-        if keys[pygame.K_s]:
-            player.y += player_vel
-main()
+        move = False
+
+        if keys[pygame.locals.K_RIGHT]:
+            if int(player.rect.x/maze._x_scale)<maze._width:
+                if maze.can_move_to(int(player.rect.x / maze._x_scale) + 1,int(player.rect.y / maze._y_scale)):
+                    move=True
+                    #-- move the player right by x pixels
+                    player.rect.x = min(player.rect.x + maze._x_scale, 700)
+                    
+        if keys[pygame.locals.K_LEFT]:
+            if int(player.rect.x/maze._x_scale)>0:
+                if maze.can_move_to(int(player.rect.x / maze._x_scale) - 1,int(player.rect.y / maze._y_scale)):
+                    move=True
+                    #-- move the player left by x pixels
+                    player.rect.x = max(player.rect.x - maze._x_scale, 0)
+                    
+        if keys[pygame.locals.K_UP]:
+            if int(player.rect.y/maze._y_scale)-1>=0:
+                if maze.can_move_to(int(player.rect.x/maze._x_scale),int(player.rect.y/maze._y_scale)-1):
+                    move=True
+                    #-- move the player up by x pixels
+                    player.rect.y = max(player.rect.y - maze._y_scale, 0)
+                    
+        if keys[pygame.locals.K_DOWN]:       
+            if player.rect.y/maze._y_scale+1 < maze._height:        
+                if maze.can_move_to(int(player.rect.x/maze._x_scale),int(player.rect.y/maze._y_scale) +1):
+                    move=True
+                    #-- move the player down by x pixels
+                    player.rect.y = min(player.rect.y + maze._y_scale, 700)
+        
+        """ Delete items that are picked up by the player"""
+        for i,item in enumerate(items):
+            if item.rect == player.rect:
+                
+                player.pickup()
+                items.pop(i)
+                
+        """If the player reaches the exit, they either win or lose depending on if they collected all the items"""
+        if maze.is_exit(int(player.rect.x/maze._x_scale),int(player.rect.y/maze._y_scale)):
+            run=False
+            if player.backpack>=4:
+                print("You Win")
+            else:
+                print("You Lost")
+        
+        """ Re-textures the maze first, then the player and remaining items."""
+        window.blit(maze.surface,(0,0))
+        window.blit(player.image, player.rect)
+        for i in items:
+            window.blit(i.image,i.rect)
+        pygame.display.update()
+
+        """Detects if the player moved in this frame. Delays for a short time to slow the player."""
+        if move: 
+            pygame.time.delay(400)
+
+
+        
+
+if __name__ == "__main__":
+
+    main()
