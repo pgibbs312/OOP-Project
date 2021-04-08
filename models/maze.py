@@ -93,6 +93,7 @@ class Maze:
 
                 elif not(self.can_move_to(x,y)):
                     item = pygame.image.load("Views\Wall.png")
+                    self.item = pygame.transform.scale(item, (70, 140))
 
                 else:
             
