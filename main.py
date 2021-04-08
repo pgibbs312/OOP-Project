@@ -1,6 +1,8 @@
 import pygame
 import time 
 import datetime
+import json
+import requests
 from models.maze import Maze
 from models.maze import Items
 from models.player import Player
@@ -155,10 +157,10 @@ def main():
         scr_send = {"name":name,
                     "score":score,
                     "date":datetime.datetime.now().strftime("%c")}
-        print(scr_send)
-    
-
         
+        with open("scores.json","w") as fp:
+            json.dump(scr_send,fp)
+            
 
 if __name__ == "__main__":
 
