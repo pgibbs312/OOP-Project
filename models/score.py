@@ -38,6 +38,7 @@ class Score:
     def date(self):
         return self.date
 
+    @staticmethod
     def from_json(json_string):
         """
         Should take data from a given json file
@@ -58,12 +59,13 @@ class Score:
         """
         # Who could have guessed
 
-        with open("{}".format(self.name),'r') as fb:
+        with open("{}".format(self.player_name),'r') as fb:
             json.dump({'name':self.player_name,
             'score':self.score,
             'date':self.date})
 
-    def from_dict(self,dict_):
+    @staticmethod
+    def from_dict(dict_):
         return Score(player_name_=dict_['name'],score_=dict_['score'])
 
     def to_dict(self):
