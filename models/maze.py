@@ -82,7 +82,7 @@ class Maze:
                 elif (self.is_exit(x,y)):
                     
                     item = pygame.Surface((self._x_scale,self._y_scale))
-                    item.fill((0,250,0))
+                    item.fill((255,255,0))
                     
                 elif (self.is_player(x,y)):
                     item = pygame.Surface((self._x_scale,self._y_scale))
@@ -92,9 +92,7 @@ class Maze:
                     
 
                 elif not(self.can_move_to(x,y)):
-                    
-                    item = pygame.Surface((self._x_scale,self._y_scale))
-                    item.fill((250,0,0))
+                    item = pygame.image.load("Views\Wall.png")
 
                 else:
             
