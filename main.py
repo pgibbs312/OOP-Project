@@ -1,11 +1,15 @@
 import pygame
 import time 
+import datetime
 from models.maze import Maze
 from models.maze import Items
 from models.player import Player
+from models.score import Score
 
 pygame.font.init()
 pygame.init()
+font = pygame.font.Font(None, 40)
+blue = pygame.Color('dodgerblue')
 
 def main():
     """ 
@@ -15,17 +19,26 @@ def main():
     """
     
     """set the game display"""
+    msg="Null"
     width, height = 800, 800
     window = pygame.display.set_mode((width, height))
     window.fill((0,0,0))
     clock = pygame.time.Clock()
+    
+    timer = 20
+    time_pass=0
+
+    time_txt = font.render(f"Time: {str(round(timer))}",True,blue)
+    window.blit(time_txt, (0,0))
+    
+    score=0
     
 
     pygame.display.set_caption("Maze Game")
     
 
     run = True
-
+    
 
     """create the images of the maze, player, and items."""
     maze = Maze("Views\maze.txt")
@@ -36,17 +49,20 @@ def main():
         items.append(Items(i[0],i[1],[i[2],i[3]]))
     
     """Place the images on the game window"""
-    window.blit(maze.surface, (0,0))
+    window.blit(maze.surface, (0,100))
     pygame.display.update()
 
     """Running loop"""
     while run:
-        clock.tick(30)
-
+        
+        dt=clock.tick(30)
+        
+        
         """ Stop the game if the game is quit """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                msg = "Quit"
 
         """movement functions for the player class"""
         keys = pygame.key.get_pressed()
@@ -91,12 +107,12 @@ def main():
         if maze.is_exit(int(player.rect.x/maze._x_scale),int(player.rect.y/maze._y_scale)):
             run=False
             if player.backpack>=4:
-                print("You Win")
+                msg = "You Win"
             else:
-                print("You Lost")
+                msg = ("You Lost")
         
         """ Re-textures the maze first, then the player and remaining items."""
-        window.blit(maze.surface,(0,0))
+        window.blit(maze.surface,(0,100))
         window.blit(player.image, player.rect)
         for i in items:
             window.blit(i.image,i.rect)
@@ -106,6 +122,41 @@ def main():
         if move: 
             pygame.time.delay(400)
 
+        """Timer that adds to score and ends game if it reaches 0"""
+
+        time_pass+=dt
+        
+        if 1 <= time_pass/1000:
+            timer-=1
+            time_pass=0
+
+        """Covers the old timer and replaces it before updating."""
+        time_txt = font.render("Timer: {}        Backpack: {}".format(str(round(timer)),player.backpack),True,blue)
+        window.blit(pygame.Surface((800,100)),(0,0))
+        window.blit(time_txt, (0,0))
+        pygame.display.update()
+
+        if timer <= 0:
+            run = False
+            msg = ("You ran out of time")
+
+    """Detects how the game ended, and returns a message"""
+
+    if msg != "Quit" and msg !="Null":
+        score = 100*player.backpack + timer
+        end_bubble = font.render("{}    Please Check the Command line".format(msg),True,blue)
+        window.fill((10,10,10))
+        window.blit(end_bubble,(10,10))
+        pygame.display.update()
+        
+        """Tells the player what their score was"""
+        print(f"Final score: {score}")
+        name = input("Please tell me your name: ")
+        scr_send = {"name":name,
+                    "score":score,
+                    "date":datetime.datetime.now().strftime("%c")}
+        print(scr_send)
+    
 
         
 
