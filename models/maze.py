@@ -92,8 +92,7 @@ class Maze:
                     
 
                 elif not(self.can_move_to(x,y)):
-                    item = pygame.image.load("Views\Wall.png")
-
+                    item = pygame.image.load("Views/Wall.png")  
                 else:
             
                     item = pygame.Surface((self._x_scale,self._y_scale))
