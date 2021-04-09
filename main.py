@@ -1,12 +1,10 @@
 import pygame
 import time 
 import datetime
-import json
 import requests
 from models.maze import Maze
 from models.maze import Items
 from models.player import Player
-from models.score import Score
 
 pygame.font.init()
 pygame.init()
@@ -51,7 +49,7 @@ def main():
         items.append(Items(i[0],i[1],[i[2],i[3]]))
     
     """Place the images on the game window"""
-    window.blit(maze.surface, (0,100))
+    window.blit(maze.surface, (100,100))
     pygame.display.update()
 
     """Running loop"""
@@ -154,12 +152,12 @@ def main():
         """Tells the player what their score was"""
         print(f"Final score: {score}")
         name = input("Please tell me your name: ")
-        scr_send = {"name":name,
+        scr_json = {"name":name,
                     "score":score,
                     "date":datetime.datetime.now().strftime("%c")}
         
-        with open("scores.json","w") as fp:
-            json.dump(scr_send,fp)
+
+        res = requests.post("http://127.0.0.1:5000/api/add",json=scr_json)
             
 
 if __name__ == "__main__":
