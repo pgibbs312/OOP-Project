@@ -84,7 +84,7 @@ class Maze:
                 elif (self.is_exit(x,y)):
                     
                     item = pygame.Surface((self._x_scale,self._y_scale))
-                    item.fill((0,250,0))
+                    item.fill((255,255,0))
                     
                 elif (self.is_player(x,y)):
                     item = pygame.Surface((self._x_scale,self._y_scale))
@@ -94,9 +94,8 @@ class Maze:
                     print(self.player)
 
                 elif not(self.can_move_to(x,y)):
-                    
-                    item = pygame.Surface((self._x_scale,self._y_scale))
-                    item.fill((250,0,0))
+                    item = pygame.image.load("Views\Wall.png")
+                    self.item = pygame.transform.scale(item, (70, 140))
 
                 else:
             
@@ -190,7 +189,7 @@ class Items(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(image, (25, 25))
         self.rect = self.image.get_rect()
         self.rect.x=x+scales[0]/2
-        self.rect.y=y+scales[1]/2
+        self.rect.y=(y+50)+scales[1]/2
 
 
 if __name__ == "__main__":
