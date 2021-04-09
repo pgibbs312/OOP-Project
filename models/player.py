@@ -21,12 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(image, (25, 25))
         self.rect = self.image.get_rect()
         self.rect.x=x+scales[0]/2
-<<<<<<< HEAD
-        self.rect.y=y+scales[1]/2
-        print(self.rect)
-=======
         self.rect.y=(y+50)+scales[1]/2
->>>>>>> 639b10065b7a30a19849021187342ed6b56a60cb
 
         self.backpack = 0
     
