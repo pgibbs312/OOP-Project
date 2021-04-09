@@ -18,14 +18,16 @@ class Maze:
         self._lines = lines_
         self._width = len(self._lines[0]) #grid space
         self._height =len(self._lines)    #grid space
-    
-        self._x_scale = int(700/self._width) #pixels per grid space
-        self._y_scale = int(700/self._height)#pixels per grid spa
+
+        print(f" Ding, {self._width} {self._height}")
+
+        self._x_scale = int(800/self._width)  #pixels per grid space
+        self._y_scale = int(700/self._height) #pixels per grid space
         
         self.player = 0
         self._items = []
 
-        self.surface = pygame.Surface((700,800))
+        self.surface = pygame.Surface((800,700))
    
     @property
     def surface(self):
@@ -65,7 +67,7 @@ class Maze:
             items = list(set(items))
             items.append(self.find_random_spot())
         
-        surface = pygame.Surface((700,700))
+        surface = pygame.Surface((800,700))
 
         for y,line in enumerate(self._lines):
             for x,space in enumerate(line):
@@ -89,7 +91,7 @@ class Maze:
                     item.fill((0,0,0))
 
                     self.player = ([x*self._x_scale,y*self._y_scale,self._x_scale,self._y_scale])
-                    
+                    print(self.player)
 
                 elif not(self.can_move_to(x,y)):
                     
@@ -194,7 +196,7 @@ class Items(pygame.sprite.Sprite):
 if __name__ == "__main__":
     pygame.init()
     
-    width, height = 800, 800
+    width, height = 800, 700
     window = pygame.display.set_mode((width, height))
     window.fill((250,250,250))
     
